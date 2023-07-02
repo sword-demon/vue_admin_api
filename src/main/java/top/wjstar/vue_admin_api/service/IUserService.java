@@ -1,6 +1,7 @@
 package top.wjstar.vue_admin_api.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import top.wjstar.vue_admin_api.dto.LoginDto;
 import top.wjstar.vue_admin_api.entity.User;
 
 /**
@@ -13,4 +14,5 @@ import top.wjstar.vue_admin_api.entity.User;
  */
 public interface IUserService extends IService<User> {
 
+    Boolean login(LoginDto loginDto);
 }

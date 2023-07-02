@@ -5,8 +5,10 @@ import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import top.wjstar.vue_admin_api.dto.LoginDto;
 import top.wjstar.vue_admin_api.entity.User;
 import top.wjstar.vue_admin_api.service.IUserService;
 
@@ -30,8 +32,16 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
+    @Value("${files.upload.path}")
+    private String filesUploadPath;
+
     @Resource
     private IUserService userService;
+
+    @PostMapping("/login")
+    public Boolean login(@RequestBody LoginDto loginDto) {
+        return userService.login(loginDto);
+    }
 
     @PostMapping
     public Boolean save(@RequestBody User user) {

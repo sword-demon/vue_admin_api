@@ -1,7 +1,9 @@
 package top.wjstar.vue_admin_api.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import top.wjstar.vue_admin_api.dto.LoginDto;
 import top.wjstar.vue_admin_api.entity.User;
 import top.wjstar.vue_admin_api.mapper.UserMapper;
 import top.wjstar.vue_admin_api.service.IUserService;
@@ -17,4 +19,13 @@ import top.wjstar.vue_admin_api.service.IUserService;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
+    @Override
+    public Boolean login(LoginDto loginDto) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", loginDto.getUsername());
+        queryWrapper.eq("password", loginDto.getPassword());
+        User one = getOne(queryWrapper);
+
+        return one != null;
+    }
 }
