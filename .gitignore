@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### 本地配置
+!/src/main/resources/application-loca.yml
