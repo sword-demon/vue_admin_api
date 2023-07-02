@@ -1,24 +1,24 @@
 package top.wjstar.vue_admin_api.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import top.wjstar.vue_admin_api.entity.User;
-import top.wjstar.vue_admin_api.mapper.UserMapper;
 import top.wjstar.vue_admin_api.service.UserService;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserMapper userMapper;
-
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
-    public UserController(UserMapper userMapper, UserService userService) {
-        this.userMapper = userMapper;
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -29,7 +29,7 @@ public class UserController {
 
     @GetMapping("/list")
     public List<User> userList() {
-        return userMapper.findAll();
+        return userService.list();
     }
 
     @PostMapping
@@ -39,23 +39,34 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id) {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("id", id);
-        boolean b = userService.removeByMap(map);
-        System.out.println(b);
+    public boolean delete(@PathVariable Integer id) {
+        return userService.removeById(id);
     }
 
     // ?pageNum=1&pageSize=10
+//    @GetMapping("/page")
+//    public Map<String, Object> findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+//        Integer offset = (pageNum - 1) * pageSize;
+//        List<User> data = userMapper.selectPage(offset, pageSize);
+//        Integer total = userMapper.selectTotal();
+//        System.out.println(total);
+//        Map<String, Object> res = new HashMap<>();
+//        res.put("data", data);
+//        res.put("total", total);
+//        return res;
+//    }
+
     @GetMapping("/page")
-    public Map<String, Object> findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
-        Integer offset = (pageNum - 1) * pageSize;
-        List<User> data = userMapper.selectPage(offset, pageSize);
-        Integer total = userMapper.selectTotal();
-        System.out.println(total);
-        Map<String, Object> res = new HashMap<>();
-        res.put("data", data);
-        res.put("total", total);
-        return res;
+    public IPage<User> findPage(@RequestParam Integer pageNum,
+                                @RequestParam Integer pageSize,
+                                @RequestParam(defaultValue = "") String username) {
+        log.info("pageNum: {}", pageNum);
+        log.info("pageSize: {}", pageSize);
+        IPage<User> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("username", username);
+        IPage<User> userPage = userService.page(page, queryWrapper);
+        System.out.println(userPage);
+        return userPage;
     }
 }
