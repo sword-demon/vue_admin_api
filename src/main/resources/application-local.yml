@@ -7,3 +7,9 @@ spring:
     url: jdbc:mysql://localhost:3306/vue_admin_api?serverTimezone=GMT%2b8
     username: root
     password: root
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    # 打印出 SQL
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
