@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### 本地配置
-!/src/main/resources/application-loca.yml
+!/src/main/resources/application-local.yml
