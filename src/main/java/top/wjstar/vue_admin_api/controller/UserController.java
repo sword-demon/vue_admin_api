@@ -43,6 +43,11 @@ public class UserController {
         return userService.removeById(id);
     }
 
+    @PostMapping("/delete/batch")
+    public boolean deleteBatch(@RequestBody List<Integer> ids) {
+        return userService.removeByIds(ids);
+    }
+
     // ?pageNum=1&pageSize=10
 //    @GetMapping("/page")
 //    public Map<String, Object> findPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
@@ -65,6 +70,7 @@ public class UserController {
         IPage<User> page = new Page<>(pageNum, pageSize);
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.like("username", username);
+        queryWrapper.orderByDesc("id");
         IPage<User> userPage = userService.page(page, queryWrapper);
         System.out.println(userPage);
         return userPage;
