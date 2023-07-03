@@ -14,5 +14,5 @@ import top.wjstar.vue_admin_api.entity.User;
  */
 public interface IUserService extends IService<User> {
 
-    Boolean login(LoginDto loginDto);
+    LoginDto login(LoginDto loginDto);
 }

@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import top.wjstar.vue_admin_api.common.Result;
 import top.wjstar.vue_admin_api.dto.LoginDto;
 import top.wjstar.vue_admin_api.entity.User;
 import top.wjstar.vue_admin_api.service.IUserService;
@@ -39,8 +40,8 @@ public class UserController {
     private IUserService userService;
 
     @PostMapping("/login")
-    public Boolean login(@RequestBody LoginDto loginDto) {
-        return userService.login(loginDto);
+    public Result login(@RequestBody LoginDto loginDto) {
+        return Result.success(userService.login(loginDto));
     }
 
     @PostMapping
@@ -59,8 +60,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User findOne(@PathVariable Integer id) {
-        return userService.getById(id);
+    public Result findOne(@PathVariable Integer id) {
+        return Result.success(userService.getById(id));
     }
 
     @GetMapping("/page")

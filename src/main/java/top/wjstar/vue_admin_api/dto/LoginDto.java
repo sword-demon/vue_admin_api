@@ -13,6 +13,9 @@ import javax.validation.constraints.NotNull;
 @Data
 @ApiModel(value = "登录对象", description = "")
 public class LoginDto {
+
+    private Integer id;
+
     @ApiModelProperty("用户名")
     @NotNull(message = "用户名不能为空")
     @NotBlank(message = "用户名不能为空")
@@ -22,4 +25,7 @@ public class LoginDto {
     @NotNull(message = "密码不能为空")
     @NotBlank(message = "密码不能为空")
     private String password;
+
+    private String nickname;
+    private String avatar;
 }
