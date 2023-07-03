@@ -28,4 +28,6 @@ public class LoginDto {
 
     private String nickname;
     private String avatar;
+
+    private String token;
 }

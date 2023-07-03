@@ -55,8 +55,8 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> findAll() {
-        return userService.list();
+    public Result findAll() {
+        return Result.success(userService.list());
     }
 
     @GetMapping("/{id}")
@@ -65,13 +65,13 @@ public class UserController {
     }
 
     @GetMapping("/page")
-    public Page<User> findPage(@RequestParam Integer pageNum,
-                               @RequestParam Integer pageSize,
-                               @RequestParam(defaultValue = "") String username) {
+    public Result findPage(@RequestParam Integer pageNum,
+                           @RequestParam Integer pageSize,
+                           @RequestParam(defaultValue = "") String username) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("id");
         queryWrapper.like("username", username);
-        return userService.page(new Page<>(pageNum, pageSize), queryWrapper);
+        return Result.success(userService.page(new Page<>(pageNum, pageSize), queryWrapper));
     }
 
     @PostMapping("/delete/batch")

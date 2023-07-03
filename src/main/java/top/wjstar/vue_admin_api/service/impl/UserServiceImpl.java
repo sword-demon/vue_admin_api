@@ -10,6 +10,7 @@ import top.wjstar.vue_admin_api.entity.User;
 import top.wjstar.vue_admin_api.exception.ServiceException;
 import top.wjstar.vue_admin_api.mapper.UserMapper;
 import top.wjstar.vue_admin_api.service.IUserService;
+import top.wjstar.vue_admin_api.utils.TokenUtil;
 
 /**
  * <p>
@@ -31,6 +32,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (one == null) {
             throw new ServiceException(Constants.USER_NOT_EXISTS.getCode(), Constants.USER_NOT_EXISTS.getMsg());
         }
+        String token = TokenUtil.genToken(one);
+        loginDto.setToken(token);
 
         BeanUtil.copyProperties(one, loginDto, true);
 
