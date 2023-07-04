@@ -20,4 +20,4 @@ mybatis-plus:
 
 files:
   upload:
-    path: ""
+    path: /Users/wangxin/IDEAProjects/vue_admin_api/files/
