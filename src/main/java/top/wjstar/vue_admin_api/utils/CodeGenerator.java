@@ -35,7 +35,7 @@ public class CodeGenerator {
 //                    builder.mapperBuilder().enableMapperAnnotation().build();
                     builder.controllerBuilder().enableHyphenStyle().  // 开启驼峰转连字符
                             enableRestStyle(); // 开启生成 @RestController
-                    builder.addInclude("sys_file") // 设置需要生成的表名
+                    builder.addInclude("sys_role") // 设置需要生成的表名
                             .addTablePrefix("t_", "sys_"); // 设置过滤表前缀
                 })
                 .templateEngine(new VelocityTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板

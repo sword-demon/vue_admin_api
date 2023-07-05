@@ -51,4 +51,7 @@ public class File implements Serializable {
 
     @ApiModelProperty("创建时间")
     private LocalDateTime createTime;
+
+    @ApiModelProperty("文件 md5")
+    private String md5;
 }

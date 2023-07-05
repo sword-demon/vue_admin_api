@@ -3,6 +3,8 @@ package top.wjstar.vue_admin_api.controller;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.SecureUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -57,15 +59,29 @@ public class FIleController {
         // 文件名唯一 + 文件类型要存在
         String fileUUID = uuid + StrUtil.DOT + type;
         File uploadFilePath = new File(filesUploadPath + fileUUID);
+        String md5 = SecureUtil.md5(file.getInputStream());
+
+        // 查询文件的 md5 是否存在
+        QueryWrapper<top.wjstar.vue_admin_api.entity.File> fileQueryWrapper = new QueryWrapper<>();
+        fileQueryWrapper.eq("md5", md5);
+        top.wjstar.vue_admin_api.entity.File fileServiceOne = fileService.getOne(fileQueryWrapper);
+
+        String url;
+        if (fileServiceOne != null) {
+            url = fileServiceOne.getUrl();
+        } else {
+            // 把获取到的文件存储到磁盘目录
+            url = "http://localhost:9093/file/" + fileUUID;
+        }
         file.transferTo(uploadFilePath);
-        // 后存储到 mysql
-        String url = "http://localhost:9093/file/" + fileUUID;
+
         top.wjstar.vue_admin_api.entity.File saveFile = new top.wjstar.vue_admin_api.entity.File();
         saveFile.setName(originalFilename);
         saveFile.setType(type);
         saveFile.setSize(size / 1024); // kb 单位 存储
         saveFile.setUrl(url);
         saveFile.setCreateTime(LocalDateTime.now());
+        saveFile.setMd5(md5);
         fileService.save(saveFile);
 
         return url;
